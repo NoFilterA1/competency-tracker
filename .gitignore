@@ -45,3 +45,7 @@ next-env.d.ts
 
 # generated exports (contain deployment links)
 /public/files/*.pdf
+
+# team documents with personal data
+*.xlsx
+*.xls

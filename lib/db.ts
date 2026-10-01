@@ -21,6 +21,25 @@ export function db(): DatabaseSync {
       competency text not null, points integer not null
     );
     create index if not exists idx_act_student on activities(student_id);
+    create table if not exists consents (
+      student_id integer not null, source text not null, enabled integer not null default 1,
+      primary key (student_id, source)
+    );
+    create table if not exists settings (key text primary key, value text not null);
+    create table if not exists goals (
+      id integer primary key autoincrement, student_id integer not null, competency text not null,
+      target integer not null, created text not null, deadline text not null
+    );
+    create table if not exists evidence (
+      id integer primary key autoincrement, survey_id integer not null, competency text not null,
+      text text not null, status text not null default 'pending', created text not null
+    );
+    create table if not exists survey_results (
+      id integer primary key autoincrement,
+      student_id integer,
+      created text not null,
+      answers text not null
+    );
   `);
   const n = d.prepare("select count(*) c from students").get() as unknown as { c: number };
   if (n.c === 0) seed(d);

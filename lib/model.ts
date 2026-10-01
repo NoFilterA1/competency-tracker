@@ -1,5 +1,6 @@
 import { db } from "./db";
-import { COMPETENCIES, COMP_KEYS, LEVEL_MIN, LEVEL_NAMES } from "./config";
+import { COMPETENCIES, COMP_KEYS, LEVEL_MIN, LEVEL_NAMES, SOURCES } from "./config";
+import { scoreAnswers } from "./survey";
 
 export type Student = { id: number; name: string; grp: string };
 export type Row = { student_id: number; date: string; source: string; title: string; competency: string; points: number };
@@ -86,16 +87,49 @@ export function computeStats(s: Student, rows: Row[]) {
   return { student: s, comps, total, avgFloat, overall, streak, alerts, monthly, heat, badges, growth30, sources: sources.size, count: rows.length };
 }
 
+export function getWeights(): Record<string, number> {
+  const base: Record<string, number> = {};
+  SOURCES.forEach((x) => (base[x] = 1));
+  const r = db().prepare("select value from settings where key = 'source_weights'").get() as unknown as { value: string } | undefined;
+  if (r) try { Object.assign(base, JSON.parse(r.value)); } catch {}
+  return base;
+}
+
 export function getAll() {
   const d = db();
   const students = d.prepare("select id, name, grp from students order by id").all() as unknown as Student[];
   const rows = d.prepare("select student_id, date, source, title, competency, points from activities order by date desc, id desc").all() as unknown as Row[];
+  const weights = getWeights();
+  const off = new Map<number, Set<string>>();
+  (d.prepare("select student_id, source from consents where enabled = 0").all() as unknown as { student_id: number; source: string }[])
+    .forEach((c) => { const x = off.get(c.student_id) ?? new Set<string>(); x.add(c.source); off.set(c.student_id, x); });
   const by = new Map<number, Row[]>();
-  rows.forEach((r) => { const a = by.get(r.student_id) ?? []; a.push(r); by.set(r.student_id, a); });
+  rows.forEach((r) => {
+    if (off.get(r.student_id)?.has(r.source)) return; // source switched off by the student
+    const a = by.get(r.student_id) ?? [];
+    a.push({ ...r, points: Math.round(r.points * (weights[r.source] ?? 1)) });
+    by.set(r.student_id, a);
+  });
   const stats = students.map((s) => computeStats(s, by.get(s.id) ?? []));
-  return { stats, rowsBy: by };
+  return { stats, rowsBy: by, weights, off };
 }
 
 export function groupAvg(stats: Stats[]) {
   return COMPETENCIES.map((c, i) => stats.length ? stats.reduce((a, s) => a + s.comps[i].float, 0) / stats.length : 0);
+}
+
+export function getSurveyAgg(stats: Stats[]) {
+  const rows = db().prepare("select student_id, answers from survey_results where student_id is not null order by id").all() as unknown as { student_id: number; answers: string }[];
+  const latest = new Map<number, number[]>();
+  rows.forEach((r) => latest.set(r.student_id, JSON.parse(r.answers)));
+  const comps = COMPETENCIES.map((c, i) => {
+    let self = 0, trace = 0, k = 0;
+    latest.forEach((ans, sid) => {
+      const st = stats.find((x) => x.student.id === sid);
+      if (!st) return;
+      self += scoreAnswers(ans)[i].float; trace += st.comps[i].float; k++;
+    });
+    return { key: c.key, name: c.name, self: k ? self / k : 0, trace: k ? trace / k : 0 };
+  });
+  return { n: latest.size, comps };
 }

@@ -62,7 +62,7 @@ export function ThemeMenu({ up = false }: { up?: boolean }) {
         Тема
       </button>
       {open && (
-        <div role="dialog" aria-label="Настройки темы" className={`card z-30 space-y-4 ${up ? "absolute bottom-full right-0 mb-2 w-72" : "fixed inset-x-4 top-24 md:absolute md:inset-x-auto md:right-0 md:top-full md:mt-2 md:w-72"}`} style={{ padding: 16, boxShadow: "0 8px 30px rgba(0,0,0,.18)" }}>
+        <div role="dialog" aria-label="Настройки темы" className={`card popin z-30 space-y-4 ${up ? "absolute bottom-full right-0 mb-2 w-72" : "fixed inset-x-4 top-24 md:absolute md:inset-x-auto md:right-0 md:top-full md:mt-2 md:w-72"}`} style={{ padding: 16, boxShadow: "0 8px 30px rgba(0,0,0,.18)" }}>
           <div>
             <div className="muted mb-2 text-xs font-semibold uppercase tracking-wide">Режим</div>
             <div className="grid grid-cols-3 gap-1 rounded-lg p-1" style={{ background: "var(--bg)" }}>

@@ -27,6 +27,7 @@ export default async function Presentation({ searchParams }: { searchParams: Pro
             <p className="lead" style={{ marginTop: "2.4cqw", maxWidth: "46cqw" }}>
               Система трекинга мягких и профессиональных компетенций студентов на основе цифрового следа.
             </p>
+            <p className="foot" style={{ marginTop: "3cqw", maxWidth: "46cqw" }}>Разработка прототипа выполнена внешним разработчиком по приглашению Д. Хвостовой.</p>
           </div>
           <div className="col rule-l" style={{ paddingLeft: "3.5cqw" }}>
             {[[String(COMPETENCIES.length), "компетенций в профиле"], [String(LEVEL_NAMES.length), "уровней роста"], [String(SOURCES.length), "источников цифрового следа"]].map(([v, t], k) => (
@@ -124,19 +125,36 @@ export default async function Presentation({ searchParams }: { searchParams: Pro
       ),
     },
     {
+      id: "home",
+      node: (
+        <div className="row fill" style={{ gridTemplateColumns: "1fr 1.9fr", gap: "4cqw", alignItems: "center" }}>
+          <div className="col">
+            <h2 className="d t3">Студенты по направлениям</h2>
+            <div className="col" style={{ margin: "2cqw 0" }}>
+              {["Карточки по направлениям подготовки", "Мгновенный поиск, фильтр и сортировка", "Теплокарта: студенты и 8 компетенций", "Доска статусов: кому нужна поддержка"].map((t) => (
+                <p key={t} className="tx rule-t" style={{ padding: ".9cqw 0" }}>{t}</p>
+              ))}
+            </div>
+            <div><a className="cta" href={L("/")} target="_blank">Открыть вживую</a></div>
+          </div>
+          <LiveFrame src="/?v=dir" w={1440} h={1000} printW={713} />
+        </div>
+      ),
+    },
+    {
       id: "demo-student",
       node: (
         <div className="row fill" style={{ gridTemplateColumns: "1fr 1.9fr", gap: "4cqw", alignItems: "center" }}>
           <div className="col">
             <h2 className="d t3">Профиль студента</h2>
             <div className="col" style={{ margin: "2cqw 0" }}>
-              {["Радар компетенций и сравнение с группой", "Уровень и прогресс по каждой компетенции", "Динамика за год и карта активности", "Серия недель, достижения, алерт о просадке"].map((t) => (
+              {["Радар компетенций и сравнение с группой", "Уровень и прогресс по каждой компетенции", "Динамика за год и карта активности", "Цели, история опросов, рекомендации активностей"].map((t) => (
                 <p key={t} className="tx rule-t" style={{ padding: ".9cqw 0" }}>{t}</p>
               ))}
             </div>
             <div><a className="cta" href={L("/student/3")} target="_blank">Открыть вживую</a></div>
           </div>
-          <LiveFrame src="/student/3" shot="student" w={1440} h={1000} frac={0.6} />
+          <LiveFrame src="/student/3" w={1440} h={1110} printW={713} />
         </div>
       ),
     },
@@ -144,15 +162,49 @@ export default async function Presentation({ searchParams }: { searchParams: Pro
       id: "demo-curator",
       node: (
         <div className="row fill" style={{ gridTemplateColumns: "1.9fr 1fr", gap: "4cqw", alignItems: "center" }}>
-          <LiveFrame src="/curator" shot="curator" w={1440} h={1000} frac={0.6} />
+          <LiveFrame src="/curator" w={1440} h={1000} printW={713} />
           <div className="col">
             <h2 className="d t3">Панель куратора</h2>
             <div className="col" style={{ margin: "2cqw 0" }}>
-              {["Сводка по группам и слабым компетенциям", "Лига групп по приросту за месяц", "Таблица студентов с фильтром", "Импорт цифрового следа из CSV"].map((t) => (
+              {["Сводка по группам и слабым компетенциям", "Лига групп по приросту за месяц", "Самооценка против цифрового следа", "Очередь подтверждений и импорт из CSV"].map((t) => (
                 <p key={t} className="tx rule-t" style={{ padding: ".9cqw 0" }}>{t}</p>
               ))}
             </div>
             <div><a className="cta" href={L("/curator")} target="_blank">Открыть вживую</a></div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "demo-survey",
+      node: (
+        <div className="row fill" style={{ gridTemplateColumns: "1fr 1.9fr", gap: "4cqw", alignItems: "center" }}>
+          <div className="col">
+            <h2 className="d t3">Опрос самооценки</h2>
+            <div className="col" style={{ margin: "2cqw 0" }}>
+              {["16 вопросов за 3 минуты, без «правильных» ответов", "Вопросы о поведении и частоте действий, а не тест на эрудицию", "Результат сверяется с цифровым следом", "Завышение подтверждается примером и куратором"].map((t) => (
+                <p key={t} className="tx rule-t" style={{ padding: ".9cqw 0" }}>{t}</p>
+              ))}
+            </div>
+            <div><a className="cta" href={L("/test")} target="_blank">Пройти опрос</a></div>
+          </div>
+          <LiveFrame src="/test/result/demo" w={1440} h={1000} printW={713} />
+        </div>
+      ),
+    },
+    {
+      id: "passport",
+      node: (
+        <div className="row fill" style={{ gridTemplateColumns: "1.9fr 1fr", gap: "4cqw", alignItems: "center" }}>
+          <LiveFrame src="/passport/3" w={1440} h={650} printW={713} />
+          <div className="col">
+            <h2 className="d t3">Паспорт компетенций</h2>
+            <div className="col" style={{ margin: "2cqw 0" }}>
+              {["Одна страница для работодателя: радар и уровни", "QR-код и страница проверки подлинности", "Отметки о подтверждённых компетенциях", "Печать и сохранение в PDF"].map((t) => (
+                <p key={t} className="tx rule-t" style={{ padding: ".9cqw 0" }}>{t}</p>
+              ))}
+            </div>
+            <div><a className="cta" href={L("/passport/3")} target="_blank">Открыть паспорт</a></div>
           </div>
         </div>
       ),
@@ -173,7 +225,41 @@ export default async function Presentation({ searchParams }: { searchParams: Pro
             </div>
             <div><a className="cta" href={L("/share/3")} target="_blank">Пример карточки</a></div>
           </div>
-          <div style={{ justifySelf: "center", width: "82%" }}><LiveFrame src="/share/3" shot="share" w={560} h={800} frac={0.35} /></div>
+          <div style={{ justifySelf: "center", width: "82%" }}><LiveFrame src="/share/3" w={560} h={800} printW={348} /></div>
+        </div>
+      ),
+    },
+    {
+      id: "trust",
+      node: (
+        <div className="row fill" style={{ gridTemplateColumns: "1fr 1.9fr", gap: "4cqw", alignItems: "center" }}>
+          <div className="col">
+            <h2 className="d t3">Доверие и прозрачность</h2>
+            <div className="col" style={{ margin: "2cqw 0" }}>
+              {["Центр согласий: студент сам отключает источник данных", "Методика открыта: формулы, пороги, веса источников", "Паспорт компетенций с QR-проверкой подлинности", "Выгрузка всех своих данных в один клик"].map((t) => (
+                <p key={t} className="tx rule-t" style={{ padding: ".9cqw 0" }}>{t}</p>
+              ))}
+            </div>
+            <div><a className="cta" href={L("/consent?student=3")} target="_blank">Открыть центр согласий</a></div>
+          </div>
+          <LiveFrame src="/consent?student=3" w={1440} h={1000} printW={713} />
+        </div>
+      ),
+    },
+    {
+      id: "roi",
+      node: (
+        <div className="row fill" style={{ gridTemplateColumns: "1.9fr 1fr", gap: "4cqw", alignItems: "center" }}>
+          <LiveFrame src="/roi" w={1440} h={1000} printW={713} />
+          <div className="col">
+            <h2 className="d t3">Окупаемость</h2>
+            <div className="col" style={{ margin: "2cqw 0" }}>
+              {["Калькулятор для заказчика: часы, ставка, масштаб", "Срок окупаемости и безубыточность по числу студентов", "Сценарии: пилот, вуз, регион", "Допущения заменяются данными заказчика"].map((t) => (
+                <p key={t} className="tx rule-t" style={{ padding: ".9cqw 0" }}>{t}</p>
+              ))}
+            </div>
+            <div><a className="cta" href={L("/roi")} target="_blank">Открыть калькулятор</a></div>
+          </div>
         </div>
       ),
     },
@@ -275,12 +361,12 @@ export default async function Presentation({ searchParams }: { searchParams: Pro
                 <span>{t}</span><span className="acc">↗</span>
               </a>
             ))}
-            <div className="foot" style={{ marginTop: "2cqw" }}>Команда №36 · ЮГУ</div>
+            <div className="foot" style={{ marginTop: "2cqw" }}>Команда №36 · ЮГУ<br />Разработка прототипа выполнена внешним разработчиком по приглашению Д. Хвостовой.</div>
           </div>
         </div>
       ),
     },
   ];
 
-  return <Deck slides={slides} pdfs={[{ label: "PDF светлая", href: "/files/presentation-light.pdf" }, { label: "PDF тёмная", href: "/files/presentation-dark.pdf" }]} />;
+  return <Deck slides={slides} />;
 }

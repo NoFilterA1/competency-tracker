@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { getAll, groupAvg } from "@/lib/model";
+import { getAll, groupAvg, getSurveyAgg } from "@/lib/model";
 import { COMPETENCIES, GROUPS } from "@/lib/config";
-import { importCsv } from "@/app/actions";
+import { importCsv, reviewEvidence } from "@/app/actions";
+import { db } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +18,8 @@ export default async function Curator({ searchParams }: { searchParams: Promise<
     return { grp, n: m.length, growth: Math.round(m.reduce((a, s) => a + s.growth30, 0) / Math.max(1, m.length)), avg: groupAvg(m) };
   }).sort((a, b) => b.growth - a.growth);
   const maxGrowth = Math.max(1, ...league.map((l) => l.growth));
+  const survey = getSurveyAgg(stats);
+  const queue = db().prepare("select e.id, e.competency, e.text, e.created, st.name from evidence e join survey_results r on r.id = e.survey_id left join students st on st.id = r.student_id where e.status = 'pending' order by e.id desc limit 8").all() as unknown as { id: number; competency: string; text: string; created: string; name: string | null }[];
   const alerts = stats.filter((s) => s.alerts.length > 0);
   const weakest = COMPETENCIES.map((c, i) => ({ name: c.name, v: groupAvg(stats)[i] })).sort((a, b) => a.v - b.v)[0];
 
@@ -84,40 +87,24 @@ export default async function Curator({ searchParams }: { searchParams: Promise<
         </div>
       </div>
 
-      <div className="card">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="font-semibold">Студенты</h2>
-          <form className="flex w-full flex-wrap gap-2 sm:w-auto">
-            <select name="g" defaultValue={g ?? ""} className="input sm:!w-auto">
-              <option value="">Все группы</option>
-              {GROUPS.map((x) => <option key={x}>{x}</option>)}
-            </select>
-            <input name="q" defaultValue={q ?? ""} placeholder="Поиск по имени" className="input sm:!w-auto" />
-            <button className="btn">Найти</button>
-          </form>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="tbl mt-3 w-full text-sm">
-            <thead>
-              <tr><th>Студент</th><th className="hidden sm:table-cell">Группа</th><th>Уровень</th><th>30 дн.</th><th className="hidden sm:table-cell">Серия</th><th>Просадки</th></tr>
-            </thead>
-            <tbody>
-              {list.map((s) => (
-                <tr key={s.student.id}>
-                  <td><Link href={`/student/${s.student.id}`} className="font-medium underline-offset-2 hover:underline">{s.student.name}</Link></td>
-                  <td className="hidden sm:table-cell">{s.student.grp}</td>
-                  <td>{s.overall.level} · {s.avgFloat.toFixed(1)}</td>
-                  <td>+{s.growth30}</td>
-                  <td className="hidden sm:table-cell">{s.streak > 0 ? `${s.streak} нед.` : "—"}</td>
-                  <td>{s.alerts.length ? <span title={s.alerts.map((a) => a.name).join(", ")} style={{ color: "var(--warn)" }}>{s.alerts.length}</span> : "—"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <div className="card embed-hide">
+        <div className="flex flex-wrap items-baseline justify-between gap-2"><h2 className="font-semibold">Подтверждения на проверке</h2><span className="label">в очереди: {queue.length}</span></div>
+        {queue.length === 0 ? <p className="muted mt-2 text-sm">Очередь пуста. Когда студент завышает самооценку и приводит пример, он появится здесь.</p> : (
+          <div className="mt-2 divide-y" style={{ borderColor: "var(--line)" }}>
+            {queue.map((q) => (
+              <div key={q.id} className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm" style={{ borderColor: "var(--line)" }}>
+                <div className="min-w-0 flex-1"><b>{q.name ?? "Гость"}</b> <span className="muted">· {COMPETENCIES.find((c) => c.key === q.competency)?.name}</span><div className="muted truncate">«{q.text}»</div></div>
+                <div className="flex gap-2">
+                  <form action={reviewEvidence}><input type="hidden" name="id" value={q.id} /><input type="hidden" name="status" value="confirmed" /><button className="btn">Подтвердить</button></form>
+                  <form action={reviewEvidence}><input type="hidden" name="id" value={q.id} /><input type="hidden" name="status" value="rejected" /><button className="btn-ghost">Отклонить</button></form>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      <form action={importCsv} className="card space-y-2">
+      <form action={importCsv} className="card embed-hide space-y-2">
         <h2 className="font-semibold">Импорт цифрового следа (CSV)</h2>
         <p className="muted break-words text-sm">
           Формат: <code>student_id,date,source,title,competency,points</code>. Ключи компетенций: {COMPETENCIES.map((c) => c.key).join(", ")}.

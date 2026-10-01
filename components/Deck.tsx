@@ -4,7 +4,7 @@ import { ThemeMenu } from "./ThemeMenu";
 
 export type Slide = { id: string; node: React.ReactNode };
 
-export function Deck({ slides, pdfs }: { slides: Slide[]; pdfs: { label: string; href: string }[] }) {
+export function Deck({ slides }: { slides: Slide[] }) {
   const [i, setI] = useState(0);
   const n = slides.length;
   useEffect(() => {
@@ -19,6 +19,17 @@ export function Deck({ slides, pdfs }: { slides: Slide[]; pdfs: { label: string;
     return () => window.removeEventListener("keydown", onKey);
   }, [n]);
   useEffect(() => { history.replaceState(null, "", `#${i + 1}`); }, [i]);
+
+  async function printPdf() {
+    const frames = [...document.querySelectorAll<HTMLIFrameElement>("iframe.lf-live")];
+    await Promise.all(frames.map((f) => new Promise<void>((res) => {
+      try { if (f.contentDocument?.readyState === "complete") return res(); } catch {}
+      f.addEventListener("load", () => res(), { once: true }); setTimeout(res, 4000);
+    })));
+    await new Promise((r) => setTimeout(r, 900));
+    const t = document.title; document.title = "Трекер компетенций — презентация";
+    window.print(); document.title = t;
+  }
 
   return (
     <div className="deck">
@@ -38,11 +49,11 @@ export function Deck({ slides, pdfs }: { slides: Slide[]; pdfs: { label: string;
         <span>{i + 1} / {n}</span>
         <button onClick={() => setI(Math.min(n - 1, i + 1))} aria-label="Вперёд">→</button>
         <span className="sp" />
-        {pdfs.map((p) => <a key={p.href} href={p.href} target="_blank">{p.label}</a>)}
+        <button className="pdfbtn" onClick={printPdf}>Скачать PDF в текущих цветах</button>
         <ThemeMenu up />
       </div>
       <style>{`
-        body > header { display: none; }
+        body > header, body > footer { display: none; }
         main { max-width: none !important; padding: 0 !important; overflow: visible !important; }
         .deck { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: color-mix(in srgb, var(--ink) 9%, var(--bg)); }
         .stage { width: min(100vw, calc((100vh - 56px) * 16 / 9)); aspect-ratio: 16 / 9; position: relative; }
@@ -55,6 +66,7 @@ export function Deck({ slides, pdfs }: { slides: Slide[]; pdfs: { label: string;
         .controls > button:not(.pill) { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 8px; padding: 6px 14px; cursor: pointer; }
         .controls a { text-decoration: underline; text-underline-offset: 3px; }
         .controls .sp { flex: 1; }
+        .controls .pdfbtn { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
 
         .d { font-family: var(--font-display), Georgia, serif; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; }
         .t1 { font-size: 7.4cqw; } .t2 { font-size: 4.6cqw; } .t3 { font-size: 3.3cqw; } .t4 { font-size: 2.5cqw; }
@@ -86,10 +98,8 @@ export function Deck({ slides, pdfs }: { slides: Slide[]; pdfs: { label: string;
           .stage { width: 1280px; aspect-ratio: auto; position: static; }
           .slide { display: flex !important; position: relative; width: 1280px; height: 720px; page-break-after: always; break-after: page; }
           .slide:last-child { page-break-after: auto; break-after: auto; }
-          .lf-live { display: none; }
-          .lf-light { display: block; }
-          :root[data-theme="dark"] .lf-light { display: none; }
-          :root[data-theme="dark"] .lf-dark { display: block; }
+          .lf { width: var(--pw) !important; }
+          .lf-live { transform: scale(var(--ps)) !important; }
         }
       `}</style>
     </div>
