@@ -9,7 +9,9 @@
 
 > Все данные демонстрационные: 90 вымышленных студентов в 8 направлениях подготовки. Реальных персональных данных в репозитории нет.
 
-![Студенты по направлениям](docs/screenshots/01-students-directions.png)
+<p align="center">
+  <img src="docs/screenshots/01-students-directions.png" alt="Студенты по направлениям" width="900">
+</p>
 
 ## Что внутри
 
@@ -27,6 +29,33 @@
 | Презентация | Слайды с живыми страницами прототипа, печать в PDF | [14](docs/screenshots/14-presentation.png) |
 
 Подробное описание каждой функции: [docs/FEATURES.md](docs/FEATURES.md).
+
+## Скриншоты
+
+Полный набор с описанием: [docs/FEATURES.md](docs/FEATURES.md).
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/02-students-heatmap.png" alt="Теплокарта"><br><sub>Теплокарта компетенций</sub></td>
+    <td width="50%"><img src="docs/screenshots/03-students-status-columns.png" alt="Статусы"><br><sub>Статусы колонками</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/05-student-profile.png" alt="Профиль студента"><br><sub>Профиль студента</sub></td>
+    <td><img src="docs/screenshots/06-curator-panel.png" alt="Панель куратора"><br><sub>Панель куратора</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/08-survey-question.png" alt="Опрос"><br><sub>Опрос самооценки</sub></td>
+    <td><img src="docs/screenshots/09-consent-center.png" alt="Центр согласий"><br><sub>Центр согласий</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/12-roi-calculator.png" alt="Окупаемость"><br><sub>Калькулятор окупаемости</sub></td>
+    <td><img src="docs/screenshots/13-passport.png" alt="Паспорт"><br><sub>Паспорт компетенций с QR</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/16-dark-violet-directions.png" alt="Тёмная тема"><br><sub>Тёмная тема, фиолетовый акцент</sub></td>
+    <td align="center"><img src="docs/screenshots/20-mobile-directions.png" alt="Телефон" width="45%"><img src="docs/screenshots/21-mobile-heatmap.png" alt="Телефон, теплокарта" width="45%"><br><sub>Телефон</sub></td>
+  </tr>
+</table>
 
 ## Стек
 
