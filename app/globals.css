@@ -301,3 +301,26 @@ input.slider:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px color-m
 @media (prefers-reduced-motion: reduce) { input.slider::-webkit-slider-thumb { transition: none; } }
 .lvlbar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
 .lvlbar i { display: block; height: 8px; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--accent2)) 0 / calc(var(--fill, 0) * 100%) 100% no-repeat, var(--track); }
+
+/* mobile & touch */
+.no-sb { scrollbar-width: none; } .no-sb::-webkit-scrollbar { display: none; }
+@media (max-width: 640px) {
+  .seg-fit { display: flex; width: 100%; }
+  .seg-fit button { flex: 1; justify-content: center; padding: 8px 4px; font-size: .82rem; gap: 5px; }
+  .ind-pill .pill { flex-shrink: 0; white-space: nowrap; padding: 7px 12px; }
+  table.heat { min-width: 620px; }
+  table.heat .heat-name { width: 168px; }
+  table.heat .heat-avg { width: 64px; }
+  .heat .cell { min-width: 40px; height: 34px; }
+  table.heat td:first-child, table.heat th:first-child { position: sticky; left: 0; z-index: 3; background: var(--card); box-shadow: 8px 0 8px -8px rgba(0,0,0,.25); }
+  .heat .ini, .heat svg[role="img"] { width: 28px; height: 28px; }
+  .strip > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .btn, .btn-ghost { min-height: 42px; }
+  .toast { max-width: calc(100vw - 32px); white-space: normal; text-align: center; }
+}
+@media (hover: none) { .lift:hover { transform: none; box-shadow: none; } .opt:hover { transform: none; } .heat .cell:hover { transform: none; } }
+@media (max-width: 640px) { .strip .v { font-size: 1.4rem; } .strip > div { padding: 12px 14px; } }
+.search-wrap { flex: 1 1 240px; min-width: 200px; max-width: 24rem; }
+@media (max-width: 640px) { .search-wrap { flex-basis: 100%; max-width: none; } }
+@media (max-width: 640px) { .strip > div { min-width: 0; } .strip .btn-ghost { padding: 8px 12px; white-space: nowrap; } .strip > div.flex { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .strip > div:nth-child(3):nth-last-child(2) { grid-column: 1 / -1; } }

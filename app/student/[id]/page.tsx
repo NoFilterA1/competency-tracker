@@ -6,6 +6,7 @@ import { scoreAnswers } from "@/lib/survey";
 import { CATALOG, dateIn } from "@/lib/catalog";
 import { COMPETENCIES, SOURCES } from "@/lib/config";
 import { RadarBlock, LineBlock } from "@/components/Charts";
+import { Avatar } from "@/components/Avatar";
 import { Picker } from "@/components/Picker";
 import { Heatmap } from "@/components/Heatmap";
 import { addActivity, addGoal, deleteGoal } from "@/app/actions";
@@ -43,7 +44,7 @@ export default async function StudentPage({ params }: { params: Promise<{ id: st
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div>
           <Link href="/" className="muted text-sm">← все студенты</Link>
-          <h1 className="display mt-2 text-4xl sm:text-5xl">{me.student.name}</h1>
+          <div className="mt-2 flex items-center gap-4"><Avatar name={me.student.name} size={72} /><h1 className="display text-4xl sm:text-5xl">{me.student.name}</h1></div>
           <div className="muted mt-2">{me.student.grp} · {me.count} записей цифрового следа · {me.sources} источников</div>
         </div>
         <div className="flex flex-wrap items-end gap-5">

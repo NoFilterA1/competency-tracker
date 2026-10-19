@@ -7,6 +7,7 @@ import { useIndicator } from "./useIndicator";
 import { MiniRadar } from "./MiniRadar";
 import { Num } from "./Num";
 import { DirIcon } from "./DirIcon";
+import { Avatar } from "./Avatar";
 import { COMPETENCIES, DIRECTIONS } from "@/lib/config";
 
 export type SRow = { id: number; name: string; grp: string; dir: string; level: number; levelName: string; avg: number; floats: number[]; levels: number[]; pts: number[]; growth: number; streak: number; alerts: number };
@@ -83,7 +84,7 @@ export function StudentBrowser({ rows }: { rows: SRow[] }) {
           <h1 className="display text-4xl sm:text-5xl">Студенты</h1>
           <p className="muted mt-3 text-[1.05rem] leading-relaxed">Профили собираются из цифрового следа. Студенты сгруппированы по направлениям подготовки.</p>
         </div>
-        <div ref={segRef} className="seg ind" role="group" aria-label="Вид">
+        <div ref={segRef} className="seg seg-fit ind" role="group" aria-label="Вид">
           {([["dir", "Направления"], ["heat", "Теплокарта"], ["board", "Статусы"]] as [View, string][]).map(([k, t]) => (
             <button key={k} aria-pressed={view === k} onClick={() => pick(k)}><Icon k={k} /><span>{t}</span></button>
           ))}
@@ -92,7 +93,7 @@ export function StudentBrowser({ rows }: { rows: SRow[] }) {
 
       <div className="card space-y-3" style={{ padding: 12 }}>
         <div className="flex flex-wrap items-center gap-3">
-          <label className="relative min-w-[240px] flex-1 sm:max-w-sm">
+          <label className="search-wrap relative">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--muted)" strokeWidth="1.6" strokeLinecap="round" aria-hidden><circle cx="7" cy="7" r="4.5" /><path d="M10.5 10.5L14 14" /></svg>
             <input value={q} onChange={(e) => { flip.current = true; setQ(e.target.value); }} placeholder="Найти студента" className="input" style={{ paddingLeft: 36 }} aria-label="Поиск по имени" />
           </label>
@@ -109,7 +110,7 @@ export function StudentBrowser({ rows }: { rows: SRow[] }) {
             )}
           </div>
         </div>
-        <div ref={pillRef} className="ind ind-pill flex flex-wrap gap-1.5">
+        <div ref={pillRef} className="ind ind-pill no-sb flex flex-wrap gap-1.5 max-sm:-mx-3 max-sm:flex-nowrap max-sm:overflow-x-auto max-sm:px-3">
           {[{ key: "all", name: "Все" }, ...DIRECTIONS].map((d) => (
             <button key={d.key} onClick={() => pickDir(d.key)} className="pill" aria-pressed={dir === d.key}>
               {d.name} <span className="muted">{counts[d.key] ?? 0}</span>
@@ -140,7 +141,7 @@ export function StudentBrowser({ rows }: { rows: SRow[] }) {
                     <div><div className="label">ср. уровень</div><div className="display text-2xl" style={{ color: "var(--accent)" }}>{avg.toFixed(1).replace(".", ",")}</div></div>
                     <div><div className="label">за 30 дней</div><div className="display text-2xl">+<Num value={growth} /></div></div>
                   </div>
-                  <div className="min-w-[140px] flex-1" title={`Средний уровень ${avg.toFixed(1)} из 5`}>
+                  <div className="min-w-[140px] flex-1 max-sm:basis-full" title={`Средний уровень ${avg.toFixed(1)} из 5`}>
                     <div className="label mb-1.5 flex justify-between"><span>уровень группы</span><span>{avg.toFixed(1).replace(".", ",")} / 5</span></div>
                     <div className="lvlbar">{[1, 2, 3, 4, 5].map((l) => <i key={l} className={avg >= l - 0.5 ? "on" : ""} style={{ ["--fill" as string]: Math.max(0, Math.min(1, avg - (l - 1))) }} />)}</div>
                   </div>
@@ -150,7 +151,7 @@ export function StudentBrowser({ rows }: { rows: SRow[] }) {
                     <Link key={s.id} data-flip={s.id} href={`/student/${s.id}`} className="card lift rise flex items-center gap-3" style={{ padding: 12, ["--i" as string]: i }}>
                       <MiniRadar values={s.floats} size={78} />
                       <div className="min-w-0 flex-1">
-                        <div className="truncate font-semibold leading-tight">{s.name}</div>
+                        <div className="flex items-center gap-2"><Avatar name={s.name} size={26} /><div className="truncate font-semibold leading-tight">{s.name}</div></div>
                         <div className="label">{s.grp}{s.alerts ? ` · просадок ${s.alerts}` : ""}</div>
                         <div className="mt-1.5 flex items-baseline gap-2">
                           <span className="display lvl text-3xl leading-none" style={{ color: "var(--accent)" }}>{s.level}</span>
@@ -173,7 +174,6 @@ export function StudentBrowser({ rows }: { rows: SRow[] }) {
       {view === "heat" && filtered.length > 0 && (() => {
         const idx = COMPETENCIES.findIndex((c) => c.key === heatKey);
         const list = [...filtered].sort((a, b) => idx < 0 ? b.avg - a.avg : b.floats[idx] - a.floats[idx]);
-        const initials = (n: string) => n.split(" ").map((w) => w[0]).join("");
         return (
           <div className="card rise" style={{ padding: 0, overflow: "hidden" }}>
             <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3" style={{ borderBottom: "1px solid var(--line)" }}>
@@ -198,7 +198,7 @@ export function StudentBrowser({ rows }: { rows: SRow[] }) {
                     <tr key={s.id} className="hrow">
                       <td className="px-4 py-1">
                         <Link href={`/student/${s.id}`} className="flex items-center gap-2.5">
-                          <span className="ini">{initials(s.name)}</span>
+                          <Avatar name={s.name} size={32} />
                           <span className="leading-tight"><span className="block whitespace-nowrap font-medium">{s.name}</span><span className="label">{s.grp}</span></span>
                         </Link>
                       </td>
@@ -251,12 +251,12 @@ export function StudentBrowser({ rows }: { rows: SRow[] }) {
                     {list.length === 0 && <div className="label px-1">Никого</div>}
                     {list.map((r, i) => (
                       <Link key={r.id} href={`/student/${r.id}`} data-flip={r.id} className="card lift rise flex items-center gap-3" style={{ padding: "9px 12px", ["--i" as string]: ci * 2 + i, ["--hc" as string]: c.color }}>
-                        <span className="display lvl w-6 text-center text-2xl leading-none" style={{ color: c.color }}>{r.level}</span>
+                        <Avatar name={r.name} size={34} />
                         <span className="min-w-0 flex-1">
                           <span className="block truncate text-sm font-semibold leading-tight">{r.name}</span>
                           <span className="label block">{dirName(r.dir)}{r.alerts ? ` · просадок ${r.alerts}` : ""}</span>
                         </span>
-                        <span className="text-xs font-semibold" style={{ color: c.color }}>+{r.growth}</span>
+                        <span className="text-right leading-tight"><span className="block text-xs font-semibold" style={{ color: c.color }}>+{r.growth}</span><span className="display lvl block text-lg leading-none" style={{ color: c.color }}>{r.level}</span></span>
                       </Link>
                     ))}
                   </div>

@@ -43,7 +43,7 @@ export default async function Consent({ searchParams }: { searchParams: Promise<
         <div><div className="label">Уровень с учётом согласий</div><div className="v">{now.overall.level} · {now.overall.name}</div></div>
         <div><div className="label">Уровень со всеми источниками</div><div className="v">{full.overall.level} · {full.overall.name}</div></div>
         <div><div className="label">Включено источников</div><div className="v">{per.filter((p) => p.on).length} <span className="muted text-base">из {SOURCES.length}</span></div></div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <form action={setAllConsent}><input type="hidden" name="student_id" value={me.id} /><input type="hidden" name="enabled" value="0" /><button className="btn-ghost">Отключить все</button></form>
           <form action={setAllConsent}><input type="hidden" name="student_id" value={me.id} /><input type="hidden" name="enabled" value="1" /><button className="btn-ghost">Включить все</button></form>
         </div>

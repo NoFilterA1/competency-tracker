@@ -1,0 +1,85 @@
+PROPRIETARY LICENSE / ПРОПРИЕТАРНАЯ ЛИЦЕНЗИЯ
+Все права защищены / All rights reserved.
+
+Copyright (c) 2026 NoFilterA1 (автор разработки прототипа).
+Разработка прототипа выполнена внешним разработчиком по приглашению Д. Хвостовой.
+
+-------------------------------------------------------------------------
+РУССКИЙ
+-------------------------------------------------------------------------
+
+1. Исключительные права на исходный код, дизайн, тексты, иллюстрации (включая
+   рисованные аватары), базу демонстрационных данных, методику расчёта и
+   документацию этого репозитория («Программа») принадлежат автору. Права
+   возникают в силу самого факта создания и охраняются авторским правом.
+
+2. Программа предоставляется только для ознакомления и оценки проекта:
+   командой проекта, организаторами и экспертами акселератора «Окно в рынок для
+   стартапа», заказчиком (Фонд Югры) и лицами, которым автор дал прямой доступ.
+   Любое иное использование без письменного разрешения автора запрещено.
+
+3. Без письменного разрешения автора ЗАПРЕЩАЕТСЯ:
+   а) копировать, воспроизводить Программу полностью или частично;
+   б) изменять, дорабатывать, создавать производные произведения;
+   в) распространять, публиковать, передавать третьим лицам, сдавать в аренду,
+      предоставлять доступ к исходному коду или к развёрнутой копии;
+   г) разворачивать Программу на собственных серверах, в том числе для
+      тестирования, демонстрации или коммерческого использования;
+   д) использовать Программу, её части, идеи реализации, дизайн или методику в
+      коммерческих целях, в том числе в конкурирующих продуктах и сервисах;
+   е) декомпилировать, обходить технические средства защиты, удалять сведения об
+      авторстве и правообладателе;
+   ж) использовать Программу и её содержимое для обучения моделей машинного
+      обучения, формирования наборов данных и автоматического сбора (скрейпинга).
+
+4. Фактическое доступное чтение кода (в том числе через платформу хостинга
+   репозиториев) не является передачей прав и не означает разрешения на действия,
+   перечисленные в пункте 3.
+
+5. Демонстрационные данные (студенты, группы, активности) вымышлены. Любое
+   совпадение с реальными лицами случайно. Реальные персональные данные в
+   репозиторий не включаются.
+
+6. Программа предоставляется «как есть», без гарантий. Автор не отвечает за
+   убытки, возникшие при её использовании.
+
+7. Нарушение условий влечёт ответственность, предусмотренную применимым
+   законодательством об интеллектуальной собственности, включая требование о
+   прекращении нарушения, возмещении убытков или выплате компенсации. Для
+   отношений сторон применяется право Российской Федерации, если императивные
+   нормы страны, где происходит нарушение, не требуют иного.
+
+8. Права на передачу, лицензирование или продажу Программы могут быть оформлены
+   только письменным договором, подписанным автором.
+
+9. Сторонние компоненты (Next.js, React, Tailwind CSS, Lenis, qrcode, шрифты
+   @fontsource и другие) распространяются на условиях собственных лицензий
+   (MIT, OFL и др.), и настоящая лицензия на них не распространяется.
+
+-------------------------------------------------------------------------
+ENGLISH
+-------------------------------------------------------------------------
+
+Copyright (c) 2026 NoFilterA1. All rights reserved.
+
+This software, including source code, design, texts, illustrations (including
+the hand-drawn avatars), demo dataset, scoring methodology and documentation
+(the "Software"), is proprietary. No licence is granted except as stated here.
+
+Permitted: viewing and evaluation of the project by the project team, the
+organisers and experts of the accelerator "Window to the Market for a Startup",
+the customer (Yugra Foundation) and persons given direct access by the author.
+
+Without the author's prior written permission you may NOT: copy or reproduce
+the Software; modify it or create derivative works; distribute, publish,
+sublicense, lend or provide access to the source code or a deployed copy; deploy
+or run it on your own infrastructure; use it, its parts, design or methodology
+commercially, including in competing products; reverse engineer it, circumvent
+technical protection or remove authorship notices; or use it for training
+machine-learning models, building datasets or automated scraping.
+
+Being able to read the code on a hosting platform does not grant any rights.
+The demo data is fictional. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY
+OF ANY KIND. Violations may result in liability under applicable copyright law,
+including injunctions, damages and statutory compensation. Third-party
+components remain under their own licences.
