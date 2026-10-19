@@ -1,24 +1,53 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ThemeMenu } from "./ThemeMenu";
 
 export type Slide = { id: string; node: React.ReactNode };
 
 export function Deck({ slides }: { slides: Slide[] }) {
   const [i, setI] = useState(0);
+  const [prev, setPrev] = useState<number | null>(null);
+  const [dir, setDir] = useState<"f" | "b">("f");
+  const iRef = useRef(0);
+  iRef.current = i;
   const n = slides.length;
+
+  const go = (next: number) => {
+    const clamped = Math.max(0, Math.min(n - 1, next));
+    if (clamped === i) return;
+    setDir(clamped > i ? "f" : "b");
+    setPrev(i);
+    setI(clamped);
+  };
+  const goRef = useRef(go);
+  goRef.current = go;
+
+  useEffect(() => {
+    if (prev === null) return;
+    const t = setTimeout(() => setPrev(null), 460);
+    return () => clearTimeout(t);
+  }, [prev, i]);
+
+  // Восстановление слайда из #хэша — только при монтировании (и если число слайдов вдруг меняется),
+  // иначе этот эффект гонится с записью хэша ниже и зацикливает рендер.
   useEffect(() => {
     const h = parseInt(location.hash.slice(1), 10);
     if (h >= 1 && h <= n) setI(h - 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [n]);
+
+  // Слушатель клавиатуры ставится один раз и всегда дёргает актуальный go() через ref.
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); setI((x) => Math.min(n - 1, x + 1)); }
-      if (["ArrowLeft", "PageUp"].includes(e.key)) setI((x) => Math.max(0, x - 1));
+      if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); goRef.current(iRef.current + 1); }
+      if (["ArrowLeft", "PageUp"].includes(e.key)) goRef.current(iRef.current - 1);
       if (e.key === "f") document.documentElement.requestFullscreen?.().catch(() => {});
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [n]);
+  }, []);
   useEffect(() => { history.replaceState(null, "", `#${i + 1}`); }, [i]);
+  const reduced = typeof window !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   async function printPdf() {
     const frames = [...document.querySelectorAll<HTMLIFrameElement>("iframe.lf-live")];
@@ -34,20 +63,24 @@ export function Deck({ slides }: { slides: Slide[] }) {
   return (
     <div className="deck">
       <div className="stage">
-        {slides.map((s, k) => (
-          <section key={s.id} className={`slide ${k === i ? "on" : ""}`}>
+        {slides.map((s, k) => {
+          const isCur = k === i, isPrev = k === prev;
+          const cls = reduced || prev === null ? "" : isCur ? `slide-in-${dir}` : isPrev ? `slide-out-${dir}` : "";
+          return (
+          <section key={s.id} className={`slide ${isCur ? "on" : ""} ${cls}`} style={isPrev ? { display: "flex" } : undefined}>
             <div className="top">
               <span>Трекер компетенций · Команда №36 · ЮГУ</span>
               <span>{String(k + 1).padStart(2, "0")} / {n}</span>
             </div>
             <div className="content">{s.node}</div>
           </section>
-        ))}
+          );
+        })}
       </div>
       <div className="controls">
-        <button onClick={() => setI(Math.max(0, i - 1))} aria-label="Назад">←</button>
+        <button onClick={() => go(i - 1)} aria-label="Назад">←</button>
         <span>{i + 1} / {n}</span>
-        <button onClick={() => setI(Math.min(n - 1, i + 1))} aria-label="Вперёд">→</button>
+        <button onClick={() => go(i + 1)} aria-label="Вперёд">→</button>
         <span className="sp" />
         <button className="pdfbtn" onClick={printPdf}>Скачать PDF в текущих цветах</button>
         <ThemeMenu up />
@@ -60,6 +93,14 @@ export function Deck({ slides }: { slides: Slide[] }) {
         .slide { display: none; position: absolute; inset: 0; container-type: size; overflow: hidden; background: var(--bg); color: var(--ink);
           padding: 3.4cqw 5.5cqw 4.6cqw; flex-direction: column; }
         .slide.on { display: flex; }
+        .slide-in-f { animation: deck-in-r .42s cubic-bezier(.2,.8,.2,1) both; }
+        .slide-in-b { animation: deck-in-l .42s cubic-bezier(.2,.8,.2,1) both; }
+        .slide-out-f { animation: deck-out-l .42s cubic-bezier(.4,0,1,1) both; }
+        .slide-out-b { animation: deck-out-r .42s cubic-bezier(.4,0,1,1) both; }
+        @keyframes deck-in-r { from { transform: translateX(6%); opacity: 0; } to { transform: none; opacity: 1; } }
+        @keyframes deck-in-l { from { transform: translateX(-6%); opacity: 0; } to { transform: none; opacity: 1; } }
+        @keyframes deck-out-l { from { transform: none; opacity: 1; } to { transform: translateX(-6%); opacity: 0; } }
+        @keyframes deck-out-r { from { transform: none; opacity: 1; } to { transform: translateX(6%); opacity: 0; } }
         .top { display: flex; justify-content: space-between; font-size: 1.15cqw; color: var(--muted); padding-bottom: 1.1cqw; border-bottom: 1px solid var(--line); }
         .content { flex: 1; min-height: 0; padding-top: 3cqw; display: flex; flex-direction: column; }
         .controls { display: flex; gap: 14px; align-items: center; height: 56px; width: min(100vw, calc((100vh - 56px) * 16 / 9)); font-size: 14px; color: var(--muted); }
@@ -96,8 +137,9 @@ export function Deck({ slides }: { slides: Slide[] }) {
           .controls { display: none !important; }
           .deck { display: block; min-height: 0; background: none; }
           .stage { width: 1280px; aspect-ratio: auto; position: static; }
-          .slide { display: flex !important; position: relative; width: 1280px; height: 720px; page-break-after: always; break-after: page; }
-          .slide:last-child { page-break-after: auto; break-after: auto; }
+          .slide { display: none !important; animation: none !important; }
+          .slide.on { display: flex !important; position: relative; width: 1280px; height: 720px; page-break-after: always; break-after: page; }
+          .slide.on:last-child { page-break-after: auto; break-after: auto; }
           .lf { width: var(--pw) !important; }
           .lf-live { transform: scale(var(--ps)) !important; }
         }
