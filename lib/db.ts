@@ -3,10 +3,14 @@ import fs from "node:fs";
 import path from "node:path";
 import { COMP_KEYS, GROUPS, NAMES, TEMPLATES } from "./config";
 
-const g = globalThis as unknown as { __db?: DatabaseSync };
+const SEED_V = "4";
+const g = globalThis as unknown as { __db?: DatabaseSync; __rolled?: string };
 
 export function db(): DatabaseSync {
-  if (g.__db) return g.__db;
+  if (g.__db) {
+    if (g.__rolled !== iso(new Date())) rollDemo(g.__db);
+    return g.__db;
+  }
   const dir = path.join(process.cwd(), "data");
   fs.mkdirSync(dir, { recursive: true });
   const d = new DatabaseSync(path.join(dir, "app.db"));
@@ -42,8 +46,14 @@ export function db(): DatabaseSync {
     );
   `);
   const n = d.prepare("select count(*) c from students").get() as unknown as { c: number };
-  if (n.c === 0) seed(d);
+  const ver = (d.prepare("select value v from settings where key = 'seed_v'").get() as unknown as { v: string } | undefined)?.v;
+  if (n.c > 0 && ver !== SEED_V) {
+    d.exec("delete from activities; delete from students; delete from goals; delete from consents; delete from settings where key in ('demo_anchor','demo_max_id'); delete from sqlite_sequence where name = 'activities'");
+    n.c = 0;
+  }
+  if (n.c === 0) { seed(d); d.prepare("insert into settings (key, value) values ('seed_v', ?) on conflict(key) do update set value = excluded.value").run(SEED_V); }
   g.__db = d;
+  rollDemo(d);
   return d;
 }
 
@@ -58,6 +68,25 @@ function rng(seed: number) {
 
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 
+// Демо-данные привязаны к дате запуска: сдвигаем засеянные записи к сегодняшнему дню,
+// чтобы окна «30 дней», серии и просадки не устаревали.
+function rollDemo(d: DatabaseSync) {
+  const get = (k: string) => (d.prepare("select value v from settings where key = ?").get(k) as unknown as { v: string } | undefined)?.v;
+  const put = d.prepare("insert into settings (key, value) values (?, ?) on conflict(key) do update set value = excluded.value");
+  const today = iso(new Date());
+  let anchor = get("demo_anchor");
+  if (!anchor) {
+    const m = d.prepare("select max(date) m, max(id) i from activities").get() as unknown as { m: string | null; i: number | null };
+    if (!m.m) return;
+    anchor = m.m;
+    put.run("demo_max_id", String(m.i));
+  }
+  const shift = Math.round((Date.parse(today) - Date.parse(anchor)) / 864e5);
+  if (shift > 0) d.prepare("update activities set date = date(date, ?) where id <= ?").run(`+${shift} days`, Number(get("demo_max_id")));
+  put.run("demo_anchor", shift > 0 ? today : anchor);
+  g.__rolled = today;
+}
+
 export function seed(d: DatabaseSync) {
   const r = rng(2026);
   const now = new Date();
@@ -69,7 +98,7 @@ export function seed(d: DatabaseSync) {
   d.exec("begin");
   NAMES.forEach((name, i) => {
     const id = i + 1;
-    insS.run(id, name, GROUPS[i % GROUPS.length]);
+    insS.run(id, name, i < 24 ? GROUPS[i % 4] : i < 48 ? GROUPS[4 + ((i - 24) % 4)] : GROUPS[(i * 3 + (i >> 3)) % GROUPS.length]);
     const weights = COMP_KEYS.map(() => 0.25 + r() * 1.5);
     const sum = weights.reduce((a, b) => a + b, 0);
     const rate = 0.5 + r() * 1.2;

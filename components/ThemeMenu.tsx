@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { themeFx, toast } from "./Fx";
 
 type Mode = "auto" | "light" | "dark";
 const MODES: { key: Mode; label: string }[] = [
@@ -44,12 +45,15 @@ export function ThemeMenu({ up = false }: { up?: boolean }) {
   }, [open]);
 
   function pickMode(m: Mode) {
+    themeFx();
     setMode(m);
     if (m === "auto") delete document.documentElement.dataset.theme;
     else document.documentElement.dataset.theme = m;
     save("theme", m === "auto" ? null : m);
   }
   function pickAccent(a: string) {
+    themeFx();
+    toast(`Акцент: ${ACCENTS.find((x) => x.key === a)?.label}`);
     setAccent(a);
     document.documentElement.dataset.accent = a;
     save("accent", a === "teal" ? null : a);

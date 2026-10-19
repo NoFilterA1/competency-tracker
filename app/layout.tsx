@@ -5,7 +5,10 @@ import "@fontsource/ibm-plex-sans/500.css";
 import "@fontsource/ibm-plex-sans/600.css";
 import "@fontsource-variable/source-serif-4";
 import { ThemeMenu } from "@/components/ThemeMenu";
+import { NavLinks } from "@/components/NavLinks";
+import { Fx } from "@/components/Fx";
 import { MoreMenu } from "@/components/MoreMenu";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -30,6 +33,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ru" suppressHydrationWarning>
       <head><script dangerouslySetInnerHTML={{ __html: themeScript }} /></head>
       <body className="flex min-h-screen flex-col">
+        <SmoothScroll />
+        <Fx />
         <header className="sticky top-0 z-20 border-b" style={{ borderColor: "var(--line)", background: "var(--bg)" }}>
           <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2.5">
             <Link href="/" className="mr-auto flex items-center gap-2.5">
@@ -38,12 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <span className="muted hidden text-xs lg:inline">прототип · демо-данные</span>
             </Link>
             <div className="order-2 md:order-3"><ThemeMenu /></div>
-            <nav className="order-3 -mx-2 flex w-full flex-wrap items-center gap-1 md:order-2 md:mx-0 md:w-auto">
-              <Link href="/" className="navlink">Студенты</Link>
-              <Link href="/test" className="navlink">Опрос</Link>
-              <Link href="/curator" className="navlink">Куратор</Link>
-              <MoreMenu />
-            </nav>
+            <NavLinks><MoreMenu /></NavLinks>
           </div>
         </header>
         <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-7">{children}</main>

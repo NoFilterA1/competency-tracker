@@ -3,8 +3,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { QUESTIONS, TOTAL, scoreAnswers, DEMO_ANSWERS } from "@/lib/survey";
 import { COMPETENCIES } from "@/lib/config";
+import { Picker } from "./Picker";
 import { RadarBlock } from "./Charts";
-import { Picto, FreqBars } from "./Pictos";
+import { Picto } from "./Pictos";
 import { saveSurvey } from "@/app/actions";
 
 type S = { id: number; name: string; grp: string };
@@ -78,10 +79,7 @@ export function Survey({ students, startId }: { students: S[]; startId?: number 
           </div>
           <div className="mt-6 max-w-lg space-y-2">
             <label className="label" htmlFor="who">Кто проходит опрос</label>
-            <select id="who" className="input" value={sid} onChange={(e) => setSid(Number(e.target.value))}>
-              <option value={0}>Гость (без сравнения с цифровым следом)</option>
-              {students.map((s) => <option key={s.id} value={s.id}>{s.name} · {s.grp}</option>)}
-            </select>
+            <Picker label="Кто проходит опрос" value={sid} onChange={(v) => setSid(Number(v))} options={[{ value: 0, label: "Гость (без сравнения с цифровым следом)" }, ...students.map((s) => ({ value: s.id, label: `${s.name} · ${s.grp}` }))]} />
             <button className="btn mt-2" onClick={() => setStarted(true)}>Начать</button>
           </div>
         </div>
@@ -134,11 +132,10 @@ export function Survey({ students, startId }: { students: S[]; startId?: number 
             const on = (chosen || answers[i]) === o.v;
             return (
               <button key={o.text} onClick={() => pick(o.v)} className="opt flex min-h-[3.5rem] w-full items-center gap-3 rounded-[10px] border p-3.5 text-left sm:h-[4.75rem]"
-                style={{ background: on ? "var(--accent)" : "var(--card)", color: on ? "var(--on-accent)" : "var(--ink)", borderColor: on ? "var(--accent)" : "var(--line)" }}>
+                style={{ opacity: chosen && !on ? 0.45 : 1, transform: chosen && on ? "scale(1.01)" : undefined, background: on ? "var(--accent)" : "var(--card)", color: on ? "var(--on-accent)" : "var(--ink)", borderColor: on ? "var(--accent)" : "var(--line)" }}>
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border text-sm font-semibold"
                   style={{ borderColor: on ? "currentColor" : "var(--line)" }}>{k + 1}</span>
                 <span className="flex-1">{o.text}</span>
-                {q.kind !== "scenario" && <FreqBars level={k + 1} active={on} />}
               </button>
             );
           })}

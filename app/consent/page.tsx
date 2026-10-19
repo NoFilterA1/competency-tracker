@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Picker } from "@/components/Picker";
 import { db } from "@/lib/db";
 import { SOURCES, SOURCE_INFO } from "@/lib/config";
 import { computeStats, getWeights, type Row, type Student } from "@/lib/model";
@@ -32,7 +33,7 @@ export default async function Consent({ searchParams }: { searchParams: Promise<
         <form className="card embed-hide flex flex-col justify-center gap-2 lg:col-span-5" method="get">
           <label className="label" htmlFor="st">Студент</label>
           <div className="flex gap-2">
-            <select id="st" name="student" defaultValue={me.id} className="input min-w-0 flex-1">{all.map((s) => <option key={s.id} value={s.id}>{s.name} · {s.grp}</option>)}</select>
+            <Picker name="student" label="Студент" className="min-w-0 flex-1" defaultValue={me.id} options={all.map((s) => ({ value: s.id, label: `${s.name} · ${s.grp}` }))} />
             <button className="btn">Показать</button>
           </div>
         </form>

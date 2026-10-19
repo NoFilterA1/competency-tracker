@@ -6,6 +6,7 @@ import { scoreAnswers } from "@/lib/survey";
 import { CATALOG, dateIn } from "@/lib/catalog";
 import { COMPETENCIES, SOURCES } from "@/lib/config";
 import { RadarBlock, LineBlock } from "@/components/Charts";
+import { Picker } from "@/components/Picker";
 import { Heatmap } from "@/components/Heatmap";
 import { addActivity, addGoal, deleteGoal } from "@/app/actions";
 
@@ -89,7 +90,7 @@ export default async function StudentPage({ params }: { params: Promise<{ id: st
                 <div className="col-span-7 sm:col-span-5"><div className="bar"><i style={{ width: `${(c.float / 5) * 100}%` }} /></div></div>
                 <div className="col-span-5 text-right text-sm sm:col-span-3">
                   <b>{c.level}</b> <span className="muted">{c.levelName}</span>
-                  {c.g30 > 0 && <span className="ml-1.5" style={{ color: "var(--good)" }}>+{c.g30}</span>}
+                  {c.g30 > 0 && <span className="ml-1.5" style={{ color: "var(--accent)" }}>+{c.g30}</span>}
                 </div>
               </div>
             ))}
@@ -134,12 +135,12 @@ export default async function StudentPage({ params }: { params: Promise<{ id: st
               </div>
             ))}
           </div>
-          <form action={addGoal} className="mt-4 grid gap-2 border-t pt-4" style={{ borderColor: "var(--line)" }}>
+          <form action={addGoal} data-toast="Цель добавлена" className="mt-4 grid gap-2 border-t pt-4" style={{ borderColor: "var(--line)" }}>
             <input type="hidden" name="student_id" value={me.student.id} />
-            <select name="competency" className="input">{COMPETENCIES.map((c) => <option key={c.key} value={c.key}>{c.name}</option>)}</select>
+            <Picker name="competency" label="Компетенция" options={COMPETENCIES.map((c) => ({ value: c.key, label: c.name }))} />
             <div className="grid grid-cols-2 gap-2">
-              <select name="target" className="input" defaultValue={60}>{[30, 60, 100, 150].map((t) => <option key={t} value={t}>+{t} баллов</option>)}</select>
-              <select name="days" className="input" defaultValue={30}>{[14, 30, 60, 90].map((t) => <option key={t} value={t}>за {t} дн.</option>)}</select>
+              <Picker name="target" label="Цель" defaultValue={60} options={[30, 60, 100, 150].map((t) => ({ value: t, label: `+${t} баллов` }))} />
+              <Picker name="days" label="Срок" defaultValue={30} options={[14, 30, 60, 90].map((t) => ({ value: t, label: `за ${t} дн.` }))} />
             </div>
             <button className="btn">Поставить цель</button>
           </form>
@@ -190,13 +191,13 @@ export default async function StudentPage({ params }: { params: Promise<{ id: st
             </tbody>
           </table>
         </div>
-        <form action={addActivity} className="card space-y-2.5 lg:col-span-5">
+        <form action={addActivity} data-toast="Запись добавлена" className="card space-y-2.5 lg:col-span-5">
           <h2>Добавить запись вручную</h2>
           <input type="hidden" name="student_id" value={me.student.id} />
           <input name="title" required placeholder="Что сделал(а)" className="input" />
           <div className="grid grid-cols-2 gap-2">
-            <select name="competency" className="input">{COMPETENCIES.map((c) => <option key={c.key} value={c.key}>{c.name}</option>)}</select>
-            <select name="source" className="input">{SOURCES.map((s) => <option key={s}>{s}</option>)}</select>
+            <Picker name="competency" label="Компетенция" options={COMPETENCIES.map((c) => ({ value: c.key, label: c.name }))} />
+            <Picker name="source" label="Источник" options={SOURCES.map((s) => ({ value: s, label: s }))} />
           </div>
           <input name="points" type="number" min={1} max={100} defaultValue={20} className="input" />
           <button className="btn">Добавить</button>

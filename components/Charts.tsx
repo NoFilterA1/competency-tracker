@@ -18,7 +18,7 @@ export function RadarBlock({ data, name, avgName, animate = false, height = 340 
           <polygon key={k} points={data.map((_, i) => pt(i, n, k).join(",")).join(" ")} fill="none" stroke="var(--line)" strokeWidth={1} />
         ))}
         {data.map((_, i) => { const [x, y] = pt(i, n, 5); return <line key={i} x1={CX} y1={CY} x2={x} y2={y} stroke="var(--line)" strokeWidth={1} />; })}
-        {avgName ? <path d={poly(data.map((d) => d.avg))} style={{ d: `path("${poly(data.map((d) => d.avg))}")`, transition: tr }} fill="var(--warn)" fillOpacity={0.12} stroke="var(--warn)" strokeWidth={1.5} strokeDasharray="4 3" /> : null}
+        {avgName ? <path d={poly(data.map((d) => d.avg))} style={{ d: `path("${poly(data.map((d) => d.avg))}")`, transition: tr }} fill="var(--ink)" fillOpacity={0.08} stroke="var(--ink)" strokeWidth={1.5} strokeDasharray="4 3" /> : null}
         <path className="radar-in" d={poly(data.map((d) => d.value))} style={{ d: `path("${poly(data.map((d) => d.value))}")`, transition: tr }} fill="var(--accent)" fillOpacity={0.3} stroke="var(--accent)" strokeWidth={2} strokeLinejoin="round" />
         {data.map((d, i) => {
           const [x, y] = pt(i, n, 5.75);
@@ -28,7 +28,7 @@ export function RadarBlock({ data, name, avgName, animate = false, height = 340 
       </svg>
       <div className="mt-1 flex flex-wrap justify-center gap-x-5 gap-y-1 text-xs">
         <span className="flex items-center gap-1.5" style={{ color: "var(--accent)" }}><i className="mark" style={{ marginRight: 0 }} />{name}</span>
-        {avgName ? <span className="flex items-center gap-1.5" style={{ color: "var(--warn)" }}><i className="mark" style={{ marginRight: 0, background: "var(--warn)" }} />{avgName}</span> : null}
+        {avgName ? <span className="flex items-center gap-1.5" style={{ color: "var(--ink)" }}><i className="mark" style={{ marginRight: 0, background: "var(--ink)" }} />{avgName}</span> : null}
       </div>
     </div>
   );

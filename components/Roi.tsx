@@ -9,7 +9,7 @@ function Slider({ label, value, set, min, max, step, suffix }: { label: string; 
   return (
     <label className="block">
       <div className="flex items-baseline justify-between"><span className="text-sm">{label}</span><b>{fmt(value)} <span className="muted font-normal">{suffix}</span></b></div>
-      <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => set(Number(e.target.value))} className="mt-1.5 w-full" style={{ accentColor: "var(--accent)" }} />
+      <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => set(Number(e.target.value))} className="slider mt-1.5 w-full" style={{ ["--r" as string]: (value - min) / (max - min) }} />
     </label>
   );
 }
