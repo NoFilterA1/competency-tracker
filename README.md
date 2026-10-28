@@ -53,7 +53,7 @@
 
 <table>
   <tr>
-    <td width="50%"><img src="docs/screenshots/01-students-directions.png" alt="Направления"><br><sub><b>Студенты по направлениям.</b> Блоки разной ширины по числу студентов.</sub></td>
+    <td width="50%"><img src="docs/screenshots/01-students-directions.png" alt="Направления"><br><sub><b>Студенты по направлениям.</b> Плитки направлений слева направо и карточки студентов без пустых мест; слева панель разделов.</sub></td>
     <td width="50%"><img src="docs/screenshots/02-students-heatmap.png" alt="Теплокарта"><br><sub><b>Теплокарта.</b> Студент × компетенция, цвет показывает уровень.</sub></td>
   </tr>
   <tr>
