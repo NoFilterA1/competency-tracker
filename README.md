@@ -14,8 +14,8 @@
 </p>
 
 <p align="center">
-  <a href="https://shortcuts-atlantic-necessarily-shops.trycloudflare.com/"><b>▶ Открыть прототип</b></a><br>
-  <sub>Адрес временный. Актуальная ссылка будет здесь же.</sub>
+  <a href="http://157.250.203.226:3100/"><b>▶ Открыть прототип</b></a><br>
+  <sub>Работает по IP. После переезда появится постоянный адрес.</sub>
 </p>
 
 ---
