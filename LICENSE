@@ -13,10 +13,10 @@ Copyright (c) 2026 NoFilterA1 (автор разработки прототип�
    документацию этого репозитория («Программа») принадлежат автору. Права
    возникают в силу самого факта создания и охраняются авторским правом.
 
-2. Программа предоставляется только для ознакомления и оценки проекта:
-   организаторами и экспертами акселератора «Окно в рынок для стартапа»,
-   заказчиком (Фонд Югры) и лицами, которым автор дал прямой доступ.
-   Любое иное использование без письменного разрешения автора запрещено.
+2. Программа предоставляется только тем лицам, которым автор дал письменное
+   разрешение или прямой доступ, и только в объёме этого разрешения (например,
+   для ознакомления или оценки). Любое иное использование без письменного
+   разрешения автора запрещено.
 
 3. Без письменного разрешения автора ЗАПРЕЩАЕТСЯ:
    а) копировать, воспроизводить Программу полностью или частично;
@@ -45,7 +45,10 @@ Copyright (c) 2026 NoFilterA1 (автор разработки прототип�
 
 7. Нарушение условий влечёт ответственность, предусмотренную применимым
    законодательством об интеллектуальной собственности, включая требование о
-   прекращении нарушения, возмещении убытков или выплате компенсации. Для
+   прекращении нарушения, возмещении убытков или выплате компенсации. По выбору
+   автора компенсация определяется по правилам ст. 1301 ГК РФ, в том числе
+   в двукратном размере стоимости права использования Программы, определяемой
+   по ценам автора, а при их отсутствии по сравнимым обстоятельствам. Для
    отношений сторон применяется право Российской Федерации, если императивные
    нормы страны, где происходит нарушение, не требуют иного.
 
@@ -72,7 +75,15 @@ Copyright (c) 2026 NoFilterA1 (автор разработки прототип�
    происхождение копии любыми средствами, включая публикацию сведений о факте
    нарушения в пределах, допускаемых законом.
 
-10. Сторонние компоненты (Next.js, React, Tailwind CSS, Lenis, qrcode, шрифты
+10. ПРИНЯТИЕ УСЛОВИЙ. Условия настоящей лицензии принимаются действиями
+    (ст. 438 ГК РФ): получение доступа к Программе или её копии, скачивание,
+    запуск, копирование или иное использование означает согласие с лицензией.
+    Лицо, не согласное с условиями, обязано немедленно прекратить использование
+    и удалить все копии. Если автор и лицо заключили отдельный письменный
+    договор (в том числе о неустойке или о неразглашении), он действует
+    наряду с настоящей лицензией, а при расхождениях применяется договор.
+
+11. Сторонние компоненты (Next.js, React, Tailwind CSS, Lenis, qrcode, шрифты
     @fontsource и другие) распространяются на условиях собственных лицензий
     (MIT, OFL и др.), и настоящая лицензия на них не распространяется.
 
@@ -86,9 +97,9 @@ This software, including source code, design, texts, illustrations (including
 the hand-drawn avatars), demo dataset, scoring methodology and documentation
 (the "Software"), is proprietary. No licence is granted except as stated here.
 
-Permitted: viewing and evaluation of the project by the organisers and experts
-of the accelerator "Window to the Market for a Startup", the customer (Yugra
-Foundation) and persons given direct access by the author.
+Permitted: only by persons to whom the author has given written permission or
+direct access, and only within the scope of that permission (for example, viewing
+or evaluation).
 
 Without the author's prior written permission you may NOT: copy or reproduce
 the Software; modify it or create derivative works; distribute, publish,
@@ -112,6 +123,16 @@ moving them into another work is prohibited. If they are removed or altered, the
 author's permission ends at that moment without notice and further use is use
 without permission. The author may prove the origin of a copy by the markers by
 any lawful means.
+
+ACCEPTANCE. These terms are accepted by conduct (art. 438 of the Civil Code of the
+Russian Federation): obtaining access to the Software or a copy of it,
+downloading, running, copying or any other use means agreement with this licence.
+A person who does not agree must stop using the Software at once and delete all
+copies. A separate written agreement between the author and a person (including
+on a contractual penalty or on non-disclosure) applies together with this licence
+and prevails where they differ. Statutory compensation (art. 1301) may be claimed,
+at the author's choice, including twice the value of the right to use the Software
+at the author's prices.
 
 Being able to read the code on a hosting platform does not grant any rights.
 The demo data is fictional. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY
