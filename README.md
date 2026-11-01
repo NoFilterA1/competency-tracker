@@ -15,7 +15,10 @@
 
 <p align="center">
   <a href="https://competency-track.ru/"><b>▶ Открыть прототип</b></a><br>
-  <sub>Вход по логину. Работает по https на competency-track.ru.</sub>
+  <sub>Логин:</sub>
+  juri
+  <sub>Пароль:</sub>
+  juri2026!
 </p>
 
 <img src="docs/assets/divider.svg" alt="" width="100%">
