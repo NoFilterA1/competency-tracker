@@ -4,8 +4,8 @@
 
 <p align="center">
   <img alt="Статус" src="https://img.shields.io/badge/статус-прототип-2dd4bf?style=for-the-badge">
-  <img alt="Данные" src="https://img.shields.io/badge/данные-демонстрационные-a78bfa?style=for-the-badge">
-  <img alt="Исходный код" src="https://img.shields.io/badge/исходный_код-закрыт-fb7185?style=for-the-badge">
+  <img alt="Данные" src="https://img.shields.io/badge/данные-демонстрационные+реальные-a78bfa?style=for-the-badge">
+  <img alt="Исходный код" src="https://img.shields.io/badge/исходный_код-продается-fb7185?style=for-the-badge">
 </p>
 
 <p align="center">
