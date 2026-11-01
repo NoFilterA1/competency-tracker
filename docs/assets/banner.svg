@@ -27,7 +27,7 @@
 <rect x="332" y="212" width="170" height="34" rx="17" fill="#38bdf8" fill-opacity=".14" stroke="#7dd3fc" stroke-opacity=".5"/><text x="417" y="234" font-size="14" fill="#bae6fd" text-anchor="middle">90 демо-студентов</text>
 <rect x="514" y="212" width="150" height="34" rx="17" fill="#fb7185" fill-opacity=".14" stroke="#fda4af" stroke-opacity=".5"/><text x="589" y="234" font-size="14" fill="#fecdd3" text-anchor="middle">8 направлений</text>
 </g>
-<text x="66" y="292" font-size="14" fill="#8fbfb3" opacity="0"><animate attributeName="opacity" from="0" to=".9" dur="1s" begin="1.6s" fill="freeze"/>Команда №36 · ЮГУ · акселератор «Окно в рынок для стартапа»</text>
+<text x="66" y="292" font-size="14" fill="#8fbfb3" opacity="0"><animate attributeName="opacity" from="0" to=".9" dur="1s" begin="1.6s" fill="freeze"/>Акселератор «Окно в рынок для стартапа»</text>
 </g>
 <rect x="-400" y="332" width="400" height="4" fill="url(#shim)"><animate attributeName="x" dur="4s" repeatCount="indefinite" values="-400;1200"/></rect>
 </g>
