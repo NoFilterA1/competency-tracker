@@ -1,8 +1,8 @@
 PROPRIETARY LICENSE / ПРОПРИЕТАРНАЯ ЛИЦЕНЗИЯ
 Все права защищены / All rights reserved.
 
-Copyright (c) 2026 NoFilterA1 (автор разработки прототипа).
-Разработка прототипа выполнена внешним разработчиком по приглашению Д. Хвостовой.
+Copyright (c) 2026 NoFilterA1 (автор и разработчик прототипа).
+Разработка выполнена по приглашению Д. Хвостовой.
 
 -------------------------------------------------------------------------
 РУССКИЙ
@@ -60,10 +60,10 @@ Copyright (c) 2026 NoFilterA1 (автор разработки прототип�
    обязательно сохраняются в неизменном виде:
    а) уведомление об авторских правах «© 2026 NoFilterA1», настоящий текст
       лицензии и ссылка на него в каждой копии и в каждом доступе к Программе;
-   б) фраза об авторстве «Разработка прототипа выполнена внешним разработчиком
-      по приглашению Д. Хвостовой» и указание автора в видимых местах
-      интерфейса, документации и презентационных материалов, где они есть
-      в исходной версии;
+   б) указание автора «NoFilterA1» и сведения о приглашении (в том числе
+      слова «по приглашению Д. Хвостовой») в том виде, в каком они приведены
+      в исходной версии, в видимых местах интерфейса, документации
+      и презентационных материалов;
    в) метки происхождения: заголовки исходных файлов с пометкой «ct:…»,
       идентификатор «ct-provenance» в коде страниц и в выгрузках данных, а также
       иные служебные пометки автора. Эти метки являются информацией об авторском
@@ -112,9 +112,9 @@ machine-learning models, building datasets or automated scraping.
 ATTRIBUTION AND MARKERS MUST BE KEPT. Any use the author has allowed in writing
 (including demonstration, trial or deployment) requires that the following stay
 intact in every copy and every access: the notice "© 2026 NoFilterA1", this
-licence text or a link to it; the statement "Разработка прототипа выполнена
-внешним разработчиком по приглашению Д. Хвостовой" and the author's name wherever
-they appear in the original interface, documentation and presentation materials;
+licence text or a link to it; the author's name "NoFilterA1" and the invitation
+notice (including the words "по приглашению Д. Хвостовой") exactly as given in the
+original version, wherever they appear in the interface, documentation and presentation materials;
 and the provenance markers: source-file headers marked "ct:...", the
 "ct-provenance" identifier in page code and data exports, and any other
 authorship marks. These markers are copyright management information (art. 1300
